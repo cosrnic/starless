@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+	font-family: 'Comfortaa Variable', sans-serif;
+}
+
 body {
-	background: theme(colors.zinc.900);
+	background-color: theme(colors.neutral.900);
 	color: white;
 }

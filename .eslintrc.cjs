@@ -57,4 +57,5 @@ module.exports = {
 	rules: {
 		'prettier/prettier': 'warn',
 	},
+	ignorePatterns: ['pb_data/*', 'pb_migrations/*'],
 };
