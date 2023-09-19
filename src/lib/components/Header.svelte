@@ -1,32 +1,52 @@
 <script>
 	import { currentUser, login, logout } from '$lib/pocketbase';
+	import { writable } from 'svelte/store';
 	import Starless from './Starless.svelte';
+	import { fade, slide } from 'svelte/transition';
+
+	let mainOpen = writable(false);
 </script>
 
-<div class="fixed top-0 h-32 w-full px-3 py-2 md:h-40 md:px-32 md:py-8">
-	<div
-		class="flex h-full w-full flex-row items-center justify-between rounded-xl border border-white/30 bg-white/20 p-2 text-lg font-semibold text-[#ffca5b] drop-shadow-md backdrop-blur-sm md:text-xl"
+<div class="fixed top-0 flex h-32 w-full justify-between p-2 md:h-36 md:p-4">
+	<a
+		href="/"
+		class="group flex h-full w-fit flex-row gap-x-4 rounded-2xl border border-white/5 p-4 transition-all duration-200 ease-in-out hover:bg-white/5"
 	>
-		<a
-			href="/"
-			class="flex h-20 w-20 flex-row items-center justify-center gap-4 rounded-full border border-white/20 p-1 drop-shadow-md transition-all duration-200 ease-in-out hover:bg-white/20 hover:drop-shadow-lg"
+		<Starless accent={false} className="w-full h-full" />
+		<div
+			class="hidden h-full flex-col items-center justify-center transition-all duration-200 ease-in-out group-hover:flex"
 		>
-			<Starless accent={false} className="aspect-square p-0.5 rounded-full" />
-		</a>
-		{#if $currentUser}
-			<button
-				on:click={logout}
-				class="flex h-20 w-20 flex-row items-center justify-center gap-4 rounded-full border border-white/20 p-1 drop-shadow-md transition-all duration-200 ease-in-out hover:bg-white/20 hover:drop-shadow-lg"
+			<h1 class="text-xl font-bold text-[#ffca5b]">Starless</h1>
+			<a
+				href="/about"
+				class="text-lg font-semibold text-accent transition-all duration-200 ease-in-out hover:text-xl"
+				>About</a
 			>
-				<img src={$currentUser.avatar} alt="pfp" class="rounded-full" />
-			</button>
-		{:else}
-			<button
-				on:click={login}
-				class="hover:drop-shadow-lgdrop-shadow-md flex h-20 w-20 flex-row items-center justify-center gap-4 rounded-xl border border-white/20 p-1 transition-all duration-200 ease-in-out hover:bg-white/20"
+		</div>
+	</a>
+	{#if $currentUser}
+		<div
+			class="group flex h-full w-fit flex-row gap-x-4 rounded-2xl border border-white/5 p-4 transition-all duration-200 ease-in-out hover:bg-white/5"
+		>
+			<div
+				class="flex h-full flex-col items-center justify-center transition-all duration-200 ease-in-out group-hover:flex md:hidden"
 			>
-				Login
-			</button>
-		{/if}
-	</div>
+				<a class="text-xl font-bold text-[#ffca5b]" href="/profile">
+					{$currentUser.username}
+				</a>
+				<button
+					on:click={logout}
+					class="text-lg font-semibold text-accent transition-all duration-200 ease-in-out hover:text-xl"
+					>Logout</button
+				>
+			</div>
+			<a class="h-full w-full" href="/profile">
+				<img
+					src={$currentUser.avatar}
+					alt="pfp"
+					class="h-full w-full rounded-2xl"
+				/>
+			</a>
+		</div>
+	{/if}
 </div>

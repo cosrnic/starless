@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { toast } from '$lib/notification';
 	import { currentUser, pb } from '$lib/pocketbase';
-	import { resolvePath } from '@sveltejs/kit';
 	import { writable } from 'svelte/store';
 
 	let url: string = '';
@@ -23,75 +23,46 @@
 		} catch (e: any) {
 			console.log(e.data);
 			if (e.data.code == 400) {
-				error.set(e.data.message);
+				error.set(e.data.code + ': ' + e.data.message);
 			} else {
-				error.set('Unknown Error');
+				error.set(e.data.code + ': ' + 'Unknown Error');
 			}
 			url = '';
+			toast($error, 'error');
 			return;
 		}
 
 		copy.set(`${$page.url.href}${dbStuff.id}`);
+		navigator.clipboard.writeText($copy);
+		toast('Copied to your clipboard!', 'copy');
 		url = '';
 	}
 </script>
 
 <div class="flex w-[300px] flex-col gap-2">
 	<form on:submit|preventDefault={createLink}>
-		<div class="flex w-full flex-row gap-2">
-			<input
-				bind:value={url}
-				required
-				placeholder="Enter URL"
-				class="w-full rounded-xl border-2 border-accent bg-transparent p-2 outline-none ring-0 transition-all duration-200 ease-in-out focus:bg-white/20"
-			/>
+		<div class="relative w-full flex-row">
 			<button
 				type="submit"
 				disabled={url == ''}
-				class="rounded-xl bg-accent px-2 py-1 transition-all duration-200 ease-in-out disabled:bg-gray-500"
-				>Create</button
+				class="absolute right-3 top-2/4 grid h-5 w-5 -translate-y-2/4 place-items-center text-accent disabled:text-white/5"
 			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					height="auto"
+					viewBox="0 0 448 512"
+					><path
+						fill="currentcolor"
+						d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"
+					/></svg
+				>
+			</button>
+			<input
+				bind:value={url}
+				required
+				class="peer h-full w-full rounded-2xl border border-white/5 bg-transparent px-3 py-2.5 !pr-9 font-bold text-white outline-none transition-all placeholder:text-white/20 hover:bg-white/10 focus:bg-white/10"
+				placeholder="https://example.com"
+			/>
 		</div>
 	</form>
-	{#if $error}
-		<div
-			class="relative h-fit w-full rounded-xl border-2 border-red-500 text-red-500 transition-all duration-200 ease-in-out"
-		>
-			<button
-				on:click={() => {
-					error.set('');
-				}}
-				class="absolute right-2 top-0 hover:text-red-500">x</button
-			>
-			<p class="p-2">
-				Error:
-				<span class="rounded-xl bg-neutral-800 px-2 py-1 text-red-500"
-					>{$error}</span
-				>
-			</p>
-		</div>
-	{/if}
-	{#if $copy}
-		<div
-			class="relative h-fit w-full rounded-xl border-2 border-green-500 text-green-500 transition-all duration-200 ease-in-out"
-		>
-			<button
-				on:click={() => {
-					copy.set('');
-				}}
-				class="absolute right-2 top-0 hover:text-red-500">x</button
-			>
-			<button
-				on:click={() => {
-					navigator.clipboard.writeText($copy);
-				}}
-				class="p-2"
-			>
-				Your Shortened URL is
-				<span class="rounded-xl bg-neutral-800 px-2 py-1 text-accent"
-					>{$copy}</span
-				>!
-			</button>
-		</div>
-	{/if}
 </div>

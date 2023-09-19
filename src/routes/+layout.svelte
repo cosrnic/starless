@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Header from '$lib/components/Header.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	import { currentUser } from '$lib/pocketbase';
 	import { onMount } from 'svelte';
 	import '../app.css';
@@ -28,4 +30,6 @@
 	<title>Starless - A URL Shortener</title>
 </svelte:head>
 
+<Header />
 <slot />
+<Footer />
