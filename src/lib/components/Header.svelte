@@ -1,10 +1,6 @@
 <script>
-	import { currentUser, login, logout } from '$lib/pocketbase';
-	import { writable } from 'svelte/store';
+	import { currentUser, logout } from '$lib/pocketbase';
 	import Starless from './Starless.svelte';
-	import { fade, slide } from 'svelte/transition';
-
-	let mainOpen = writable(false);
 </script>
 
 <div class="fixed top-0 flex h-32 w-full justify-between p-2 md:h-36 md:p-4">
@@ -12,15 +8,15 @@
 		href="/"
 		class="group flex h-full w-fit flex-row gap-x-4 rounded-2xl border border-white/5 p-4 transition-all duration-200 ease-in-out hover:bg-white/5"
 	>
-		<Starless accent={false} className="w-full h-full" />
+		<Starless accent={true} className="w-full h-full" />
 		<div
 			class="hidden h-full flex-col items-center justify-center transition-all duration-200 ease-in-out group-hover:flex"
 		>
 			<h1 class="text-xl font-bold text-[#ffca5b]">Starless</h1>
 			<a
-				href="/about"
+				href="/unshorten"
 				class="text-lg font-semibold text-accent transition-all duration-200 ease-in-out hover:text-xl"
-				>About</a
+				>Unshorten</a
 			>
 		</div>
 	</a>

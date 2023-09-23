@@ -11,9 +11,11 @@
 		<h2 class="text-xl font-semibold">
 			An <span class="text-accent">Ad-Free</span> URL Shortener
 		</h2>
-		<p class="text-lg">
-			Enter your <span class="text-accent">URL</span> below!
-		</p>
+		{#if $currentUser}
+			<p class="text-lg">
+				Enter your <span class="text-accent">URL</span> below!
+			</p>
+		{/if}
 	</div>
 	{#if $currentUser}
 		<CreateLink />

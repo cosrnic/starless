@@ -5,6 +5,8 @@ import { pb } from '$lib/pocketbase';
 export const load = (async (event: PageLoadEvent) => {
 	const slug = event.params.slug;
 
+	if (slug == 'about' || slug == 'profile') return; // this isn't required but it seems to help prevent anything buggy
+
 	let dbResult;
 
 	try {

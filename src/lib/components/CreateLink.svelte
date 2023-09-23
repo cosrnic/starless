@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { PUBLIC_URL } from '$env/static/public';
 	import { toast } from '$lib/notification';
 	import { currentUser, pb } from '$lib/pocketbase';
 	import { writable } from 'svelte/store';
@@ -22,24 +22,27 @@
 			});
 		} catch (e: any) {
 			console.log(e.data);
-			if (e.data.code == 400) {
-				error.set(e.data.code + ': ' + e.data.message);
-			} else {
-				error.set(e.data.code + ': ' + 'Unknown Error');
-			}
+			error.set(e.data.code + ': ' + e.data.message);
+
 			url = '';
 			toast($error, 'error');
 			return;
 		}
 
-		copy.set(`${$page.url.href}${dbStuff.id}`);
-		navigator.clipboard.writeText($copy);
-		toast('Copied to your clipboard!', 'copy');
+		copy.set(`${PUBLIC_URL}/${dbStuff.id}`);
+		try {
+			navigator.clipboard.writeText($copy);
+			toast('Copied to your clipboard!', 'copy');
+		} catch (e) {
+			url = `unable to copy, ${$copy}`;
+			return;
+		}
+
 		url = '';
 	}
 </script>
 
-<div class="flex w-[300px] flex-col gap-2">
+<div class="flex w-[400px] flex-col gap-2">
 	<form on:submit|preventDefault={createLink}>
 		<div class="relative w-full flex-row">
 			<button
