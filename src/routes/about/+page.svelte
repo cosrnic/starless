@@ -16,7 +16,7 @@
 			and
 			<a
 				class="font-bold text-accent hover:underline"
-				href="https://gtihub.com/ottomated/create-o7-app"
+				href="https://github.com/ottomated/create-o7-app"
 				target="_blank"
 			>
 				Create o7 app
